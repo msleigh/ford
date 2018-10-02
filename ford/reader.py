@@ -262,7 +262,8 @@ class FortranReader(object):
                 else:
                     linebuffer = linebuffer.strip() + ' '
                 # Check if line will be continued
-                if line[-1] == '&':
+                # If line was single "&" and continued==True, line is now empty string with len=0
+                if len(line) == 0 or line[-1] == '&':
                     continued = True
                     line = line[0:-1]
                 else:
