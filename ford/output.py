@@ -121,23 +121,41 @@ class Documentation(object):
                                        self.data.get('graph_dir',''),
                                        graphparent,
                                        self.data['coloured_edges'].lower() == 'true')
+            start_time = time.time()
             for item in project.types:
                 self.graphs.register(item)
+            print('Types',time.time()-start_time)
+            start_time = time.time()
             for item in project.procedures:
                 self.graphs.register(item)
+            print('Procedures',time.time()-start_time)
+            start_time = time.time()
             for item in project.submodprocedures:
                 self.graphs.register(item)
+            print('Submodprocedures',time.time()-start_time)
+            start_time = time.time()
             for item in project.modules:
                 self.graphs.register(item)
+            print('Modules',time.time()-start_time)
+            start_time = time.time()
             for item in project.submodules:
                 self.graphs.register(item)
+            print('Submodules',time.time()-start_time)
+            start_time = time.time()
             for item in project.programs:
                 self.graphs.register(item)
+            print('Programs',time.time()-start_time)
+            start_time = time.time()
             for item in project.files:
                 self.graphs.register(item)
+            print('Files',time.time()-start_time)
+            start_time = time.time()
             for item in project.blockdata:
                 self.graphs.register(item)
+            print('Blockdata',time.time()-start_time)
+            start_time = time.time()
             self.graphs.graph_all()
+            print('All',time.time()-start_time)
             project.callgraph = self.graphs.callgraph
             project.typegraph = self.graphs.typegraph
             project.usegraph = self.graphs.usegraph
