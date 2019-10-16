@@ -81,6 +81,8 @@ class GraphManager(object):
             self.graph_objs.append(obj)
         
     def graph_all(self):
+        print('Starting graphs...')
+        start_time = time.time()
         for obj in tqdm(iter(self.graph_objs), file=sys.stdout, total=len(self.graph_objs), unit=''):
             if isinstance(obj,FortranModule):
                 obj.usesgraph = ford.graphs.UsesGraph(obj,self.webdir)
@@ -106,19 +108,27 @@ class GraphManager(object):
             elif isinstance(obj,FortranBlockData):
                 obj.usesgraph = ford.graphs.UsesGraph(obj,self.webdir)
                 self.blockdata.add(obj)
+        print('Done', time.time() - start_time)
         usenodes = list(self.modules)
         callnodes = list(self.procedures)
         for p in self.programs:
             if len(p.usesgraph.added) > 1: usenodes.append(p)
             if len(p.callsgraph.added) > 1: callnodes.append(p)
+        print('Done', time.time() - start_time)
         for p in self.procedures:
             if len(p.usesgraph.added) > 1: usenodes.append(p)
+        print('Done', time.time() - start_time)
         for b in self.blockdata:
             if len(b.usesgraph.added) > 1: usenodes.append(b)
+        print('Done', time.time() - start_time)
         self.usegraph = ford.graphs.ModuleGraph(usenodes,self.webdir,'module~~graph')
+        print('Done', time.time() - start_time)
         self.typegraph = ford.graphs.TypeGraph(self.types,self.webdir,'type~~graph')
+        print('Done', time.time() - start_time)
         self.callgraph = ford.graphs.CallGraph(callnodes,self.webdir,'call~~graph')
+        print('Done', time.time() - start_time)
         self.filegraph = ford.graphs.FileGraph(self.sourcefiles,self.webdir,'file~~graph')
+        print('Done', time.time() - start_time)
 
     def output_graphs(self,njobs=0):
         if not self.graphdir: return
